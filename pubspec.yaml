@@ -26,13 +26,17 @@ dependencies:
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter
+   sdk: flutter
   shared_preferences: ^0.5.3+4
   toast: ^0.1.5
   image_picker:
   http: "^0.12.0"
   progress_dialog: ^1.2.0
   flutter_rating_bar: ^3.0.0
+  geolocator: ^5.1.5
+  google_maps_flutter: ^0.5.21+12
+  place_picker: ^0.9.9
+  flutter_slidable: "^0.5.4"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

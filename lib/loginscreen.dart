@@ -7,8 +7,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
 import 'package:progress_dialog/progress_dialog.dart';
+import 'user.dart';
 
 String urlLogin = "http://blazzerjet.com/mylorry/php/login_user.php";
+final TextEditingController _emcontroller = TextEditingController();
+  String _email = "";
+  final TextEditingController _passcontroller = TextEditingController();
+  String _password = "";
+  bool _isChecked = false;
+
 
 void main() => runApp(MyApp());
 
@@ -27,12 +34,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _emcontroller = TextEditingController();
-  String _email = "";
-  final TextEditingController _passcontroller = TextEditingController();
-  String _password = "";
-  bool _isChecked = false;
-
   @override
   void initState() {
     loadpref();
@@ -42,6 +43,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: Colors.redAccent));
     return WillPopScope(
         onWillPop: _onBackPressAppBar,
         child: Scaffold(
@@ -111,29 +114,36 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
-  void _onLogin() {
+ void _onLogin() {
     _email = _emcontroller.text;
     _password = _passcontroller.text;
     if (_isEmailValid(_email) && (_password.length > 4)) {
       ProgressDialog pr = new ProgressDialog(context,
           type: ProgressDialogType.Normal, isDismissible: false);
-      pr.style(message: "Please Wait");
+      pr.style(message: "Login in");
       pr.show();
       http.post(urlLogin, body: {
         "email": _email,
         "password": _password,
       }).then((res) {
         print(res.statusCode);
-        Toast.show(res.body, context,
+        var string = res.body;
+        List dres = string.split(",");
+        print(dres);
+        Toast.show(dres[0], context,
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-        if (res.body == "success") {
+        if (dres[0] == "success") {
           pr.dismiss();
+          print("Radius:");
+          print(dres);
+         User user = new User(name:dres[1],email: dres[2],phone:dres[3],radius: dres[4],credit: dres[5],rating: dres[6]);
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MainScreen(email: _email)));
-        }else{
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MainScreen(user: user)));
+        } else {
           pr.dismiss();
         }
-        
       }).catchError((err) {
         pr.dismiss();
         print(err);
