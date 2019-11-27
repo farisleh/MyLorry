@@ -66,7 +66,7 @@ class _TabScreen1State extends State<TabScreen1> {
                           children: <Widget>[
                             Stack(children: <Widget>[
                               Image.asset(
-                                "assets/images/background.png",
+                                "assets/images/background.jpg",
                                 fit: BoxFit.fitWidth,
                               ),
                               Column(
