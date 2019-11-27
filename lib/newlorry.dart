@@ -282,7 +282,7 @@ class _CreateNewLorryState extends State<CreateNewLorry> {
 
   void _loadmap() async  {
     LocationResult result = await Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => PlacePicker("AIzaSyAvIHhXiQ7TxWE2L7WY_qP2WpBDrR7TWHk")));
+        MaterialPageRoute(builder: (context) => PlacePicker("AIzaSyDvyIh2EhpS79iKvAGn4aytTTaivtTv1VQ")));
 
     // Handle the result in your way
     print("MAP SHOW:");
