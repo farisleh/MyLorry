@@ -39,7 +39,7 @@ class _NewLorryState extends State<NewLorry> {
       child: Scaffold(
           //resizeToAvoidBottomPadding: false,
           appBar: AppBar(
-            title: Text('UPLOAD LORRY SERVICE'),
+            title: Text('UPLOAD LORRY'),
             backgroundColor: Colors.red,
           ),
           body: SingleChildScrollView(
