@@ -7,20 +7,24 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/services.dart';
 import 'package:my_lorry/loginscreen.dart';
+import 'package:my_lorry/payment.dart';
 import 'package:my_lorry/registrationscreen.dart';
 import 'package:my_lorry/splashscreen.dart';
 import 'package:my_lorry/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:random_string/random_string.dart';
 
-import 'mainscreen.dart';
+
 
 String urlgetuser = "http://blazzerjet.com/mylorry/php/get_user.php";
 String urluploadImage ="http://blazzerjet.com/mylorry/php/upload_imageprofile.php";
 String urlupdate = "http://blazzerjet.com/mylorry/php/update_profile.php";
 File _image;
 int number = 0;
+String _value;
 
 class TabScreen4 extends StatefulWidget {
   //final String email;
@@ -76,7 +80,7 @@ class _TabScreen4State extends State<TabScreen4> {
                                         color: Colors.white)),
                               ),
                               SizedBox(
-                                height: 5,
+                                height: 50,
                               ),
                               GestureDetector(
                                 onTap: _takePicture,
@@ -245,7 +249,8 @@ class _TabScreen4State extends State<TabScreen4> {
                           child: Text("CHANGE RADIUS"),
                         ),
                         MaterialButton(
-                          child: Text("BUY CREDIT"), onPressed: () {},
+                          onPressed: _loadPayment,
+                          child: Text("BUY CREDIT"),
                         ),
                         MaterialButton(
                           onPressed: _registerAccount,
@@ -700,4 +705,90 @@ class _TabScreen4State extends State<TabScreen4> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('pass', pass);
   }
+
+
+void _loadPayment() async {
+    // flutter defined function
+    if (widget.user.name == "not register") {
+      Toast.show("Not allowed please register", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Buy Credit?"),
+          content: Container(
+            height: 100,
+            child: DropdownExample(),
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Yes"),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                var now = new DateTime.now();
+                var formatter = new DateFormat('ddMMyyyyhhmmss-');
+                String formatted = formatter.format(now)+randomAlphaNumeric(10);
+                print(formatted);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PaymentScreen(user:widget.user,orderid:formatted, val:_value)));
+              },
+            ),
+            new FlatButton(
+              child: new Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+
+class DropdownExample extends StatefulWidget {
+  @override
+  _DropdownExampleState createState() {
+    return _DropdownExampleState();
+  }
+}
+
+class _DropdownExampleState extends State<DropdownExample> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: DropdownButton<String>(
+        items: [
+          DropdownMenuItem<String>(
+            child: Text('20 LCredit (RM10)'),
+            value: '10',
+          ),
+          DropdownMenuItem<String>(
+            child: Text('50 LCredit (RM20)'),
+            value: '20',
+          ),
+          DropdownMenuItem<String>(
+            child: Text('100 LCredit (RM30)'),
+            value: '30',
+          ),
+        ],
+        onChanged: (String value) {
+          setState(() {
+            _value = value;
+          });
+        },
+        hint: Text('Select Credit'),
+        value: _value,
+      ),
+    );
+  }
+}
+
+
+
