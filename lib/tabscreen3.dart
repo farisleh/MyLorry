@@ -247,6 +247,7 @@ class _TabScreen3State extends State<TabScreen3> {
                                                     BorderRadius.circular(
                                                         15.0)),
                                             height: 25,
+                                            onPressed:() {_readyTogo();},
                                             child: Text(
                                               'Ready To Go',
                                               style: TextStyle(fontSize: 14),
@@ -254,7 +255,6 @@ class _TabScreen3State extends State<TabScreen3> {
                                             color: Colors.yellow,
                                             textColor: Colors.black,
                                             elevation: 5,
-                                            onPressed: (){},
                                           ),
                                           //MapSample(),
                                         )
@@ -342,5 +342,33 @@ class _TabScreen3State extends State<TabScreen3> {
     await Future.delayed(Duration(seconds: 2));
     this.makeRequest();
     return null;
+  }
+
+  void _readyTogo() {
+    // flutter defined function
+    print(widget.user.name);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Ready to pick item? " + widget.user.name),
+          content: new Text("Are your sure?"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Yes"),
+              onPressed: () {Navigator.of(context).pop();},
+            ),
+            new FlatButton(
+              child: new Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
