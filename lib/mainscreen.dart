@@ -4,7 +4,6 @@ import 'package:my_lorry/tabscreen2.dart';
 import 'package:my_lorry/tabscreen3.dart';
 import 'package:my_lorry/tabscreen4.dart';
 import 'package:my_lorry/user.dart';
-import 'tabscreen1.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -25,7 +24,6 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     tabs = [
-      TabScreen1(user: widget.user),
       TabScreen2(user: widget.user),
       TabScreen3(user: widget.user),
       TabScreen4(user: widget.user),
@@ -54,10 +52,6 @@ class _MainScreenState extends State<MainScreen> {
         type: BottomNavigationBarType.fixed,
 
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            title: Text("Lorry"),
-          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list, ),
             title: Text("Posted Lorry"),
